@@ -1,5 +1,5 @@
 
-CREATE DATABASE IF NOT EXISTS monitoring2
+CREATE DATABASE IF NOT EXISTS monitoring
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
