@@ -192,20 +192,17 @@
 </footer>
 
 <script>
-  const API_URL = "save_data.php?action=last";   // Прилагоди ако е различна патека
-  const REFRESH_INTERVAL = 5000;                  // Освежување на секои 5 секунди
-  const STALE_THRESHOLD  = 10;                    // Секунди без ново мерење = неактивен
+  const API_URL = "save_data.php?action=last";
+  const REFRESH_INTERVAL = 5000;
+  const STALE_THRESHOLD  = 10;
 
   function formatTime(datetimeStr) {
     const d = new Date(datetimeStr);
     return d.toLocaleString('mk-MK', { dateStyle: 'short', timeStyle: 'medium' });
   }
 
-  // Returns how many seconds ago a MySQL datetime string was recorded.
-  // MySQL returns server-local time with no timezone info, so we treat it
-  // as local time by appending no suffix (avoids UTC mis-parse in some browsers).
   function secondsAgo(datetimeStr) {
-    const recorded = new Date(datetimeStr.replace(" ", "T")); // "2025-03-01 14:32:00" -> ISO-like
+    const recorded = new Date(datetimeStr.replace(" ", "T"));
     return (Date.now() - recorded.getTime()) / 1000;
   }
 
@@ -222,15 +219,10 @@
       const rows = json.data;
       const last = rows[rows.length - 1];  // Последен запис
 
-      // ── Staleness check ───────────────────────────────────────────────────
-      // PHP keeps returning old rows even when Arduino is disconnected.
-      // We check the timestamp of the newest row: if it is older than
-      // STALE_THRESHOLD seconds the sensor has stopped sending data.
       const age = secondsAgo(last.vreme);
       if (age > STALE_THRESHOLD) {
         const secs = Math.round(age);
         setStatus(`Сензорот не испраќа податоци – последно мерење пред ${secs} сек.`, false);
-        // Still render the stale values so the user can see what they were
       } else {
         setStatus("Систем активен – освежување на секои 5 сек.", true);
       }
@@ -271,10 +263,8 @@
       ? "0 0 8px #4caf50" : "0 0 8px #ef5350";
   }
 
-  // Прво учитување, потоа на секои 5 сек
   fetchData();
   setInterval(fetchData, REFRESH_INTERVAL);
 </script>
-
 </body>
 </html>

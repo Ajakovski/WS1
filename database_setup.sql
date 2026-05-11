@@ -5,7 +5,6 @@ CREATE DATABASE IF NOT EXISTS monitoring
 
 USE monitoring;
 
--- Креирање на табела senzori
 CREATE TABLE IF NOT EXISTS senzori (
   id          INT          NOT NULL AUTO_INCREMENT,
   temperatura DECIMAL(5,2) NOT NULL COMMENT 'Температура во степени Целзиусови',
@@ -14,11 +13,8 @@ CREATE TABLE IF NOT EXISTS senzori (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Индекс за побрзо пребарување по дата/час
 CREATE INDEX idx_vreme ON senzori (vreme);
 
--- Тест запис (опционално - за верификација)
 INSERT INTO senzori (temperatura, vlaga) VALUES (22.50, 54.30);
 
--- Верификација
 SELECT * FROM senzori;

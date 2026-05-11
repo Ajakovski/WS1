@@ -1,14 +1,9 @@
 <?php
-// =====================================================
-// save_data.php - Прием и снимање на сензорски податоци
-// Паметна работна станица - PHP Backend Скрипта
-// =====================================================
 // http://localhost/phpmyadmin/
 // http://localhost/monitoring/index.html
-// --- Конфигурација на база на податоци ---
 $db_host = "localhost";
-$db_user = "root";       // Корисник (промени ако е потребно)
-$db_pass = "";           // Лозинка (промени ако е потребно)
+$db_user = "root";
+$db_pass = "";
 $db_name = "monitoring";
 
 // --- Конекција со MySQL база ---
@@ -21,11 +16,6 @@ if ($conn->connect_error) {
 }
 
 header("Content-Type: application/json");
-
-// -------------------------------------------------------
-// GET /save_data.php?t=23.5&h=55.3  → Снимање на нов запис
-// GET /save_data.php?action=last     → Враќање на последни 20 записи
-// -------------------------------------------------------
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'save';
 
@@ -49,7 +39,7 @@ if ($action === 'last') {
     $temperatura = floatval($_GET['t']);
     $vlaga       = floatval($_GET['h']);
 
-    // Валидација на вредности
+    // Проверка на вредности
     if ($temperatura < -40 || $temperatura > 80 || $vlaga < 0 || $vlaga > 100) {
         http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Невалидни вредности"]);
@@ -67,6 +57,5 @@ if ($action === 'last') {
     }
     $stmt->close();
 }
-
 $conn->close();
 ?>
